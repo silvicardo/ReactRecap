@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+
+    <script type="text/javascript">
+
+
+      console.log('Ciao da React')
+
+
+      /*
+
+      ARGOMENTI PRE-REACT
+
+      - metodi array! (map, filter, reduce)
+      - keyword this nelle functions (classiche vs arrow) (bind)
+      - rest e spread operator
+      - array/object destructuring
+      - funzioni pure
+
+      */
+
+
+
+      //METODI ARRAY
+/*
+      var numbers = [1,2,3,4,5,6,7,8,9,10];
+
+      //map
+
+      var numeriPerDue = numbers.map(function(number){
+        return number * 2
+      });
+
+      // var numeriPerDue = []
+      //
+      // for (var i = 0; i < numbers.length; i++) {
+      //   numeriPerDue.push(numbers[i] * 2)
+      // }
+
+      console.log(numeriPerDue);
+
+      //filter
+
+      var numbersFil = [1,2,3,4,5,6,7,8,9,10];
+
+
+      var numeriFiltrati = numbersFil.filter(function(numero){
+        return (numero % 2 === 0)
+      })
+
+      var numeriFiltrati = []
+
+      // for (var i = 0; i < numbersFil.length; i++) {
+      //
+      //   if (numbersFil[i] % 2 === 0){
+      //       numeriFiltrati.push(numbersFil[i])
+      //   }
+      //
+      // }
+
+      console.log('numeri pari', numeriFiltrati);
+
+
+      //reduce
+
+      var perTotale = [1,2,3,4,5,6,7,8,9,10];
+
+      var totale = perTotale.reduce(function(acc, valoreCorrente, indice){
+
+        acc= acc.risultato + valoreCorrente
+
+        console.log('indice ', indice + 1)
+        console.log('accumulatore ', acc.risultato);
+        return acc
+      }, {risultato: 0});
+
+      //
+      // var perTotale = ['Ciao', 'sono', 'Riccardo'];
+      //
+      // var totale = perTotale.reduce(function(acc, valoreCorrente, indice){
+      //
+      //   acc = acc + ' ' + valoreCorrente
+      //
+      //   console.log('indice ', indice + 1)
+      //   console.log('accumulatore ', acc);
+      //   return acc
+      // }, '');
+      //
+      // console.log('totale ', totale);
+
+      // var perTotale = [1,2,3,4,5,6,7,8,9,10];
+      //
+      // var totale = perTotale.reduce(function(acc, valoreCorrente, indice){
+      //
+      //   //
+      //   acc = acc + valoreCorrente
+      //
+      //   console.log('indice ', indice + 1)
+      //   console.log('accumulatore ', acc);
+      //   return acc
+      // });
+*/
+      //THIS
+/*
+      var nome = 'Leonardo'
+
+      var cognome = 'Sarallo'
+
+      //THIS E GLI OGGETTI
+
+      var studente = {
+        classe: '3',
+        nome: 'riccardo',
+        cognome: 'silvi',
+        saluta: function (){
+          console.log(this);
+          console.log(`Il mio nome è ${this.nome} ${this.cognome}`);
+        }
+      }
+
+      studente.saluta = studente.saluta.bind(this)
+
+       // studente.saluta.call(this)
+
+      studente.saluta()
+
+      // console.log('this nello scope globale');
+      // console.log(this.nome) //la window, lo scope globale
+
+      // var stampaThis = function (){
+      //   console.log(this)
+      //   console.log(`Il mio nome è ${this.nome} ${this.cognome}`);
+      // }
+      //
+      // //This con funzione regolare = scope della funzione
+      // console.log( 'funzione regolare ');
+      // stampaThis()
+      //
+      // //Associamo l'attuale valore della keyword this alla funzione
+      // studente.saluta = studente.saluta.bind(this)
+      //
+      // studente.saluta()
+      //
+      // console.log('arrow function');
+      //
+      // studente.saluta  = () => {
+      //   console.log(this)
+      //   console.log(`Il mio nome è ${this.nome} ${this.cognome}`);
+      // }
+      //
+      // studente.saluta();
+
+      */
+
+    //REST AND SPREAD OPERATOR
+
+
+    //esempio di math.max e duplicazione array
+
+    var numerivari = [1,2,3,5,234,343,54,34,353,4]
+
+
+    console.log(Math.max(...numerivari))
+
+    var state = {
+      stringa: 'Ciao ',
+      via: 'prima',
+      ada: 23
+    }
+
+    // var nome = 'Riccardo'
+    // var cognome = 'Silvi'
+    //
+    // var studente = { nome, cognome }
+
+    // console.log(studente);
+
+    state.casa = 'via verdi'
+
+    var nuovoState = {...state, casa: 'via rodolfo', via: 'dopo' };
+
+    console.log('state',state);
+    console.log('nuovoState', nuovoState)
+
+    //esempio oggetti
+
+
+    //DESTRUCTURING
+
+    //Creare nuove proprietà degli oggetti
+    //estratte proprietà da array e oggetti
+
+    // var stringa = nuovoState.stringa
+    // var casa = nuovoState.casa
+
+    // var array = [nuovoState.stringa, nuovoState.casa]
+    // console.log(array);
+
+    // var stringa = array[0]
+    // var casa = array[1]
+
+    // var [stringa]  = array
+    //
+    //
+    //  console.log(stringa);
+    // console.log(casa);
+
+
+    //FUNZIONI PURE
+
+    var state2 = {numero: 1 }
+
+    function copiaPuraOggettoModificato(oggettoIniziale, num){
+
+      return {...oggettoIniziale, numero: num }
+    }
+
+    var state3 = copiaPuraOggettoModificato(state2, 5)
+
+    console.log(state2);
+    console.log(state3);
+
+
+
+
+    </script>
+  </body>
+</html>
