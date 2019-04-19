@@ -22,40 +22,72 @@
       - rest e spread operator
       - array/object destructuring
       - funzioni pure
+        - NON PURA -> prende un input, lo manipola e te lo ritorna
+        - PURA -> prende un input, lo copia e modifica la copia senza toccare l'originale
 
-      */
+
 
 
 
       //METODI ARRAY
-/*
+
       var numbers = [1,2,3,4,5,6,7,8,9,10];
 
+      console.log('array iniziale', numbers);
       //map
+      //-> prende un array, te ne da una copia ma eseguendo un operazione per
+      //   ogni elemento dell'array, l'operazione viene eseguita nella funzione
+      //   anonima che gli passi
 
-      var numeriPerDue = numbers.map(function(number){
-        return number * 2
+      function moltiplicaPerDue(numero){
+        return numero * 2
+      }
+
+      //NUOVO MODO
+      var numeriPerDue = numbers.map((numero) => (numero * 2));
+      //VECCHIO MODO
+      var numeriPerDue = numbers.map(function(numero) {
+        return numero * 2
       });
+      //PASSARE UNA FUNZIONE A MAP
+      var numeriPerDue = numbers.map(moltiplicaPerDue);
 
+      console.log('numeri per due esempio map', numeriPerDue);
+      console.log('ma array iniziale dopo map cambia?', numbers);
       // var numeriPerDue = []
       //
       // for (var i = 0; i < numbers.length; i++) {
       //   numeriPerDue.push(numbers[i] * 2)
       // }
 
-      console.log(numeriPerDue);
+
 
       //filter
+      //-> prende un array, ti restituisce un nuovo array dove sono presenti
+      //   solo gli elementi che soddisfano la condizione specificata nella
+      //   funzione anonima passata
 
       var numbersFil = [1,2,3,4,5,6,7,8,9,10];
+      console.log('array inizio per filter', numbersFil)
 
 
+      //funzione anonima CLASSICA
       var numeriFiltrati = numbersFil.filter(function(numero){
         return (numero % 2 === 0)
       })
+      //passando una funzione
+      function isEvenNumber(number){
+        return (numero % 2 === 0) //ritorna vero o falso
+      }
 
-      var numeriFiltrati = []
+      var numeriFiltrati = numbersFil.filter(isEvenNumber)
+      //con arrow function
+      var numeriPari = numbersFil.filter((num) => (num % 2 === 0))
 
+      //SENZA METODI ARRAY
+
+      // var numeriFiltrati = []
+      //
       // for (var i = 0; i < numbersFil.length; i++) {
       //
       //   if (numbersFil[i] % 2 === 0){
@@ -68,17 +100,55 @@
 
 
       //reduce
+      //->OBIETTIVO: ciclare su un array, restituirti in uscita un valore(numero, stringa, array, oggetto).
+      //IL VANTAGGIO : hai a disposizione per tutte le iterazioni un valore(accumulatore) da modificare
+      //incrementalmente
+      //
 
+
+      //ESEMPIO 1 -> SOMMA DI TUTTI I NUMERI IN UN ARRAY
       var perTotale = [1,2,3,4,5,6,7,8,9,10];
 
-      var totale = perTotale.reduce(function(acc, valoreCorrente, indice){
+      //Specificando l'accumulatore....
+      //1 giro -> a = 0, b = 1,
+      //2 giro in poi a = acc, b = valoreCorrente
 
-        acc= acc.risultato + valoreCorrente
+      //NON Specificando l'accumulatore
+      //1 giro -> a = 1, b = 2
+      //2 giro -> a = 3 (array[0] + array[1]), b = valore Corrente( array[2])
+      //3 giro -> a = (array[0] + array[1] + array[2]), b = valoreCorrente(array[3])
+      function sommaNumeri(a, b){
 
-        console.log('indice ', indice + 1)
-        console.log('accumulatore ', acc.risultato);
-        return acc
-      }, {risultato: 0});
+        a += b
+        return a
+      }
+
+      var totale = perTotale.reduce((acc,next) => (acc + next));
+
+      console.log(totale);
+      // var totale = perTotale.reduce(function(acc, valoreCorrente, indice){
+      //
+      //   acc = acc + valoreCorrente
+      //
+      //   console.log('indice ', indice + 1)
+      //   console.log('accumulatore ', acc);
+      //   return acc
+      // }, 0);
+
+      //CON IL CICLO FOR
+
+      // var accumulatore = 0;
+      //
+      // for (var i = 0; i < perTotale.length; i++) {
+      //
+      //   var valoreCorrente = perTotale[i];
+      //
+      //   accumulatore = accumulatore + valoreCorrente
+      //
+      // }
+
+
+
 
       //
       // var perTotale = ['Ciao', 'sono', 'Riccardo'];
@@ -105,12 +175,17 @@
       //   console.log('accumulatore ', acc);
       //   return acc
       // });
-*/
+      */
       //THIS
-/*
+      /*
+      console.log('nello scope globale', this)
+
+
       var nome = 'Leonardo'
 
       var cognome = 'Sarallo'
+
+      console.log('ogni variabile nello scope di this è raggiungibile come sua proprieta' , this.nome);
 
       //THIS E GLI OGGETTI
 
@@ -118,17 +193,56 @@
         classe: '3',
         nome: 'riccardo',
         cognome: 'silvi',
-        saluta: function (){
-          console.log(this);
+        saluta: function (){//qui this è l'oggetto studente
+          console.log('this uguale a window?', this === window)
+          console.log('this in oggetto studente', this);
           console.log(`Il mio nome è ${this.nome} ${this.cognome}`);
         }
       }
 
-      studente.saluta = studente.saluta.bind(this)
+      studente.saluta()
 
-       // studente.saluta.call(this)
+      //MANIPOLIAMO THIS
+
+      //CALL -> Chiama
+
+      //Con call eseguiamo la nostra funzione con un valore di this da noi specificato
+      //però solo una tantum, la funzione originale(studente.saluta) non viene modificata
+
+      studente.saluta.call(this)
+      console.log('dopo call');
+      studente.saluta()
+
+      //BIND ->associa
+
+      console.log('BIND');
+
+      //caso 1 -> associare alla funzione di origine PERENNEMENTE un valore di this
+      studente.saluta = studente.saluta.bind(this)
+      //caso 2 -> associare ad una nuova variabile(che rappresenta una funzione) una
+      // copia di quella funzione associata ad un valore di this a tuo piacimento
+      var salutaChiMiPareConThis = studente.saluta.bind(this) //this è la window
 
       studente.saluta()
+
+
+        // console.log('this uguale a window?', this === window)
+        // var salutaChiMiPareConThis = studente.saluta.bind(this) //this è la window
+        //
+        // console.log(salutaChiMiPareConThis);
+        // salutaChiMiPareConThis()
+
+        //call, apply, bind
+
+        // call(this, argomenti)
+
+
+
+      // studente.saluta = studente.saluta.bind(this)
+      //
+      //  // studente.saluta.call(this)
+      //
+      // studente.saluta()
 
       // console.log('this nello scope globale');
       // console.log(this.nome) //la window, lo scope globale
@@ -156,76 +270,208 @@
       //
       // studente.saluta();
 
-      */
+    */
 
     //REST AND SPREAD OPERATOR
 
-
+    /*
     //esempio di math.max e duplicazione array
 
-    var numerivari = [1,2,3,5,234,343,54,34,353,4]
+    var numerivari = [1,2,3,3,45,23,56434,4,4545,454]
+
+    console.log(Math.max(1,2,3,3,45,23,56434,4,4545,454));
+
+    console.log(...numerivari);
+    //Spread operator prima
+    console.log(Math.max.apply(null, numerivari));
+
+    //Con Spread Operator
+
+    console.log(Math.max(...numerivari));
+
+    //UNIRE PIU ARRAY
+
+    var array1 = [1,2,3]
+
+    var array2 = [4,5,6]
+
+    console.log(array1.concat(array2).concat(numerivari));
+
+    //I numeri pari nell'unione di multipli array
+    console.log([...array1, ...array2, ...numerivari].filter((num) => (num % 2 === 0)));
+
+    //esempio
+
+    var classe1 = ['Riccardo', 'Gianluca', 'Giorgio', 'Goffredo']
+
+    var classe2 = ['Valerio', 'Giordano', 'Marco', 'Luxuria']
 
 
-    console.log(Math.max(...numerivari))
+    //Ditemi gli studenti che iniziano per G
 
-    var state = {
-      stringa: 'Ciao ',
-      via: 'prima',
-      ada: 23
+    console.log('filtraggio, nomi che iniziano per G');
+
+    console.log([...classe1, ...classe2].filter((nomeStudente) => (nomeStudente.split('')[0] === 'G')));
+
+    //Ditemi gli studenti che iniziano per Gi
+
+    console.log('filtraggio, nomi che iniziano per Gi');
+
+    console.log([...classe1, ...classe2].filter((nomeStudente) => (nomeStudente.slice(0,2) === 'Gi')));
+
+    //Ditemi gli studenti che contengono 'lu'
+
+    console.log('filtraggio, nomi che contengono lu');
+
+    //si può delocalizzare la funzione-----
+
+    function contieneLu(nome){
+      return (nome.toLowerCase().includes('lu'))
     }
 
-    // var nome = 'Riccardo'
-    // var cognome = 'Silvi'
-    //
-    // var studente = { nome, cognome }
+    //fare questo....
+    console.log([...classe1, ...classe2].filter(contieneLu));
+    //equivale a fare questo
+    console.log([...classe1, ...classe2].filter((nome) => (nome.toLowerCase().includes('lu'))));
 
-    // console.log(studente);
-
-    state.casa = 'via verdi'
-
-    var nuovoState = {...state, casa: 'via rodolfo', via: 'dopo' };
-
-    console.log('state',state);
-    console.log('nuovoState', nuovoState)
-
-    //esempio oggetti
+    //REST OPERATOR
 
 
-    //DESTRUCTURING
+        function stampa(stringa, ...argomenti){
+          console.log(stringa);
+          return argomenti.map(num => num * 10)
+        }
 
-    //Creare nuove proprietà degli oggetti
-    //estratte proprietà da array e oggetti
+        console.log(stampa('Ciao Gianluca', 3,5,3,45,3,5,23,2335,23,1221));
 
-    // var stringa = nuovoState.stringa
-    // var casa = nuovoState.casa
 
-    // var array = [nuovoState.stringa, nuovoState.casa]
-    // console.log(array);
-
-    // var stringa = array[0]
-    // var casa = array[1]
-
-    // var [stringa]  = array
-    //
-    //
-    //  console.log(stringa);
-    // console.log(casa);
+    */
 
 
     //FUNZIONI PURE
 
-    var state2 = {numero: 1 }
+    // - NON PURA -> prende un input, lo manipola DIRETTAMENTE e te lo ritorna
+    // - PURA -> prende un input, lo copia e modifica la copia senza toccare l'originale
 
-    function copiaPuraOggettoModificato(oggettoIniziale, num){
-
-      return {...oggettoIniziale, numero: num }
+    var state = {
+      numero: 1
     }
 
-    var state3 = copiaPuraOggettoModificato(state2, 5)
+    /*
+    // function nonPuraAggiungoUno(state){
+    //
+    //   state.numero += 1
+    //
+    //   return state
+    // }
+    //
+    // nonPuraAggiungoUno(state)
+    //
+    // console.log('non pura', state);
 
-    console.log(state2);
-    console.log(state3);
+    // console.log('falsa pura');
+    //
+    // function puraAggiungoUno(state){
+    //
+    //  var nuovoState = state
+    //
+    //   nuovoState.numero += 1
+    //
+    //   return nuovoState
+    //
+    // }
+    //
+    // var nuovoState = puraAggiungoUno(state)
+    // console.log('nuovoState', nuovoState);
+    // console.log('state vecchio', state);
+    // console.log(nuovoState === state);
+    */
 
+    // console.log('vera pura');
+    //
+    // function duplicoLoStateOriginaleEModificaPiuUno(state){
+    //
+    //   var nuovoState = Object.assign({}, state)
+    //
+    //   nuovoState.numero += 1
+    //
+    //   return nuovoState
+    //
+    // }
+    //
+    // var nuovoState = duplicoLoStateOriginaleEModificaPiuUno(state)
+    // console.log('nuovoState', nuovoState);
+    // console.log('state vecchio', state);
+    // console.log(nuovoState === state);
+
+
+    //Creare nuove proprietà degli oggetti
+
+    var state = {
+      nome: 'Riccardo',
+      cognome: 'Bianco'
+    }
+
+    console.log('state iniziale ', state);
+
+
+    var modificheState = {
+      cognome : 'Silvi',
+      eta: 32
+    }
+
+    /*
+    function setState(state, modificheState){
+      //copia pura
+      var nuovoState =  Object.assign({}, state)
+
+      //portiamo le chiavi e valori delle nostre modifiche nella copia pura
+      for (var key in modificheState) {
+        nuovoState[key] = modificheState[key]
+      }
+
+      //ritorniamo lo state modificato
+      return nuovoState
+
+    }
+
+    function setState(state, modificheState){
+
+      //copia pura
+      var nuovoState = {...state} //copia pura di un oggetto
+
+      //portiamo le chiavi e valori delle nostre modifiche nella copia pura
+      var stateAggiornato = {...state, ...modificheState}
+
+      //ritorniamo lo state modificato
+      return stateAggiornato
+
+    }
+
+    */
+    function setState(state, modificheState){
+
+      return {...state, ...modificheState}
+
+    }
+
+    var nuovoState = setState(state, modificheState)
+
+    console.log('nuovoState', nuovoState);
+    console.log('state vecchio', state);
+    console.log(nuovoState === state);
+
+    //DESTRUCTURING
+
+    //estratte proprietà da array e oggetti
+
+    const { nome, cognome } = nuovoState
+
+    console.log(nome, cognome);
+
+    const [ pippo, pluto ] = [1,2,3,4]
+
+    console.log(pippo, pluto)
 
 
 
