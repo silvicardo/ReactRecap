@@ -15,7 +15,7 @@ class App extends Component {
 
   componentDidMount(){
     console.log('componente montato');
-    debugger
+  
     //chiamata api
     setTimeout(() => {
       //risultato Api
